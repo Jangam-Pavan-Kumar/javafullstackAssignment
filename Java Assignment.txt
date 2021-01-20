@@ -287,6 +287,137 @@ d1.display(n);
 }
 }
 
+-----------------------------------------------------ASSIGNMENT  4 ----------------------------------------------------------------------------------------
+
+
+Import java.util.Scanner;
+class Employee 
+	{
+int id;
+String name;
+float salary;
+Scanner s=new Scanner(System.in);
+
+/*Employee( int a,String b,float c)
+{
+		
+		id =a ;
+		name = b;
+		salary = c;
+}*/
+  
+void read()
+              {		
+	            Scanner s=new Scanner(System.in);
+        
+                 System.out.println("enter employee id  :");
+                 id=s.nextInt();
+                 System.out.println("enter employee name :");
+                 s.nextLine();
+				 name=s.nextLine();    
+				 
+                 System.out.println("enter employee salary:  ");
+                 salary=s.nextFloat();
+               } 
+		 void sal()
+		{
+			 float hra,da,pf;
+			 hra=salary*0.1f;
+			 da=salary*0.07f;
+			 pf=salary*0.05f;
+			 salary=salary+hra+da-pf;
+		}
+			void display()
+           {
+		System.out.println("Id is  :"  +id);
+		System.out.println("Name is :  " +name);
+		System.out.println("Salary is: "  +salary);
+	       } 
+Address add=new Address();		 
+}
+class Manager extends Employee
+{
+	int mno;
+	Scanner s=new Scanner(System.in);
+	
+	void readMgr()
+	{
+		 System.out.println("enter the number of mangers:");
+        mno=s.nextInt();
+		add.readAdd();
+	}
+	void disMgr()
+	{
+         System.out.println(" The number of mangers  :"   +mno);
+	add.disAdd();
+	}
+	
+}
+class Programmer extends Employee
+{
+	String pname;
+	Scanner s=new Scanner(System.in);
+	void readprg()
+	{  
+		System.out.println("enter the Projects name:");
+		pname=s.nextLine();
+		add.readAdd();
+	}
+	void disprg()
+	{
+		System.out.println("The Projects name"  +pname);
+		add.disAdd();
+	}
+	
+}
+class Address
+{
+	String city,state;
+	int pincode;
+	Scanner a=new Scanner(System.in);
+	void readAdd()
+	{
+		System.out.println("enter the city  :");
+	city=a.nextLine();
+	System.out.println("enter the state  :");
+	state=a.nextLine();
+	System.out.println("enter the Pincode  :");
+	pincode=a.nextInt();
+	
+	}
+	void disAdd()
+	{
+	System.out.println("The City name:   " +city);
+	System.out.println("The State name:  " +state);
+        System.out.println("The Pincode :    " +pincode);
+	}
+}
+class Details {
+	public static void main(String args[]) {
+         System.out.println(" ****************************");
+		      Manager m=new Manager();
+			   m.readMgr();
+			   m.read();
+                m.sal();
+		 System.out.println(" ********************** ");
+		      Programmer p=new Programmer();
+			   p.readprg();
+			   p.read();
+			   p.sal();
+ System.out.println("*****************************************");			   
+			   
+			   m.display();
+			   System.out.println(" ***********");
+               m.disMgr();
+System.out.println("**************");
+		 p.display();
+	         System.out.println(" -----------------");
+	         p.disprg();
+	}
+}
+
+
+
 ------------------------------------ASSIGNMENT - 5 -----------------------------------------
 
 import java.util.Scanner;
@@ -360,3 +491,46 @@ std[i].display();
 }
 }
 }
+
+----------------------------------------ASSIGNMENT 7---------------------------------------------------
+import java.util.Arrays;
+import java.util.Scanner;
+ 
+public class Assign7
+{
+    public static void main(String[] args) 
+    {
+        int n;
+        String name;
+        Scanner s = new Scanner(System.in);
+         
+        System.out.print("Enter number of strings : ");
+        n = s.nextInt();
+         
+          String str[] = new String[n];
+       
+        System.out.println("Enter the Strings one by one:");
+        for(int i = 0; i < n; i++)
+        {
+            str[i] = s.nextLine();
+        }
+      
+         for (int i = 0; i < n; i++) 
+        {
+            for (int j = i + 1; j < n; j++) 
+            { 
+                if (str[i].compareTo(str[j]) > 0) 
+                {
+                    name = str[i];
+                    str[i] = str[j];
+                    str[j] =name ;
+                }
+            }
+        }
+         
+       
+        System.out.print("Strings in Sorted Order: " + Arrays.toString(str));
+    }
+}
+
+
