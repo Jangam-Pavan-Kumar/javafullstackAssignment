@@ -1,0 +1,369 @@
+package bean;
+
+
+import java.time.LocalDate;
+
+public class Product {
+private int pid;
+private String pname;
+private float pprice;
+//private LocalDate storedate;
+public Product() {
+	super();
+	// TODO Auto-generated constructor stub
+}
+public int getPid() {
+	return pid;
+}
+public void setPid(int pid) {
+	this.pid = pid;
+}
+public String getPname() {
+	return pname;
+}
+public void setPname(String pname) {
+	this.pname = pname;
+}
+public float getPprice() {
+	return pprice;
+}
+public void setPprice(float pprice) {
+	this.pprice = pprice;
+}
+///public LocalDate getStoredate() {
+//	return storedate;
+//}
+//public void setStoredate(LocalDate storedate) {
+//	this.storedate = storedate;
+//}
+public Product(int pid, String pname, float pprice, LocalDate storedate) {
+	super();
+	this.pid = pid;
+	this.pname = pname;
+	this.pprice = pprice;
+	//this.storedate = storedate;
+}
+@Override
+public String toString() {
+	return "Product [pid=" + pid + ", pname=" + pname + ", pprice=" + pprice + "]";
+}
+
+
+
+}
+
+package daolayer;
+
+import java.sql.Connection;
+
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import bean.Product;
+
+public class Dao  {
+	List<Product> ll=new ArrayList<>();
+	
+	
+	public int addproductdao(Product p)
+	{
+		int r = 0;
+		
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "pavan");
+			 PreparedStatement ps=con.prepareStatement("insert into product1 values(?,?,?)");
+    		 int pid=p.getPid();
+    		 String pname=p.getPname();
+    		 float pprice=p.getPprice();
+    		 ps.setInt(1,pid);
+    		 ps.setString(2,pname);
+    		ps.setFloat(3,pprice);
+    		r=ps.executeUpdate();
+		}
+		catch(Exception e)
+		{
+			System.err.println(e.toString());
+		}
+		return r;
+		
+		}
+	
+	public int deleteProductdao(int id)
+	{
+		int r;
+		try {
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "pavan");
+		PreparedStatement ps=con.prepareStatement("delete from product1 where pid=?");
+		ps.setInt(1, id);
+		r=ps.executeUpdate();
+		}
+		catch(Exception e)
+		{
+			System.err.println(e.toString());
+		}
+		return 1;
+	}
+	public int updateproductdao(int id,float price)
+	{
+		int r;
+		try {
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "pavan");
+		PreparedStatement ps=con.prepareStatement("update product1 set pprice=? where pid=?");
+		ps.setFloat(1, price);
+		ps.setInt(2, id);
+		r=ps.executeUpdate();
+		
+		}
+		catch(Exception e)
+		{
+			System.err.println(e.toString());
+		}
+		return 1;
+	}
+	public List<Product> getdetails()
+	{
+		int r;
+		try {
+
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "pavan");
+			PreparedStatement ps = con.prepareStatement("select * from product1");
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				Product p = new Product();
+				p.setPid(rs.getInt(1));
+				p.setPname(rs.getString(2));
+				p.setPprice(rs.getFloat(3));
+				//p.setStoredate(rs.getDate(4).toLocalDate());     
+				ll.add(p);
+				
+			}
+		} catch (Exception e) {
+			System.err.println(e.toString());
+		}
+		return ll;
+	
+	}
+	
+	public float getprice(int id)
+	{
+		float val = 0;
+		try {
+
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "pavan");
+			PreparedStatement ps = con.prepareStatement("select pprice from product1 where pid=?");
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+			rs.next();
+			val=rs.getFloat(1);
+			
+			}
+		 catch (Exception e) {
+			 System.err.println(e.toString());
+		 }
+		return val;
+				
+	}
+}
+
+package operation;
+
+
+
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Scanner;
+
+import bean.Product;
+import daolayer.Dao;
+import service.ProductService;
+
+public class ProductOperation {
+
+	public static void main(String[] args) throws Exception {
+		ProductService ps = new ProductService();
+		Product p ;
+		List<Product> l=new ArrayList<Product>();
+		Dao dao=new Dao();
+		
+		int var;	
+		do {
+			
+			Scanner sc=new Scanner(System.in);
+			System.out.println("1.Add\n2.Update\n3.Delete\n4.DisplayAll\n5.get price using id\n6.dispaly Products in low price\n7.dispaly Products in high price\n8.dispaly Products in asc of name\n9.dispaly Products in desc of name\n10. exit");
+			System.out.println("choose one option");
+			var=sc.nextInt();
+			switch(var) {
+			case 1: System.out.println("enter the product details id");
+					p=new Product();
+					p.setPid(sc.nextInt());
+					sc.nextLine();
+					System.out.println("enter the product detail name");
+					p.setPname(sc.nextLine());
+					System.out.println("enter the product details like price");
+					p.setPprice(sc.nextInt());
+				//	System.out.println("enter the product details like storedate");
+				//	String d=sc.next();
+				//	LocalDate ld=LocalDate.parse(d);
+				//	p.setStoredate(ld);
+					
+					int q=ps.addproduct(p);
+				//	if(p.getPprice()>500)
+				//	{
+				//		dao.addproductdao(p);
+				//	}
+					if(q==0)
+					{
+						System.out.println("you are entering product price less than 500");
+					}
+					else
+					{
+						System.out.println("product added successfully");
+					}
+					break;
+			case 2: System.out.println("enter the product id ");
+					int id=sc.nextInt();
+					System.out.println("enter the price ");
+					int price1=sc.nextInt();
+					int b=ps.update(id, price1);
+					if(b==1)
+					{
+						System.out.println("product updated successfully");
+					}
+					else
+					{
+						System.out.println("product not found");
+					}
+					break;
+			case 3: System.out.println("enter the product id to delete");
+					int id1=sc.nextInt();
+					int c=ps.delete(id1);
+					if(c==1)
+					{
+						System.out.println("product deleted successfully");
+					}
+					else
+					{
+						System.out.println("product not found");
+					}
+					break;
+			case 4:System.out.println("products details");
+			       l=ps.displayall();
+			       l.stream().forEach(e->System.out.println(e.getPid()+","+e.getPname()+","+e.getPprice()*.2+e.getPprice()));
+			       break;
+			case 5:System.out.println("enter product id to view the price");
+			       int id2=sc.nextInt();
+			       float d1=ps.retrieve(id2);
+			       if(d1>0)
+			       {
+			    	   System.out.println("product price is "+d1);   
+			       }
+			       else
+			       {
+			    	   System.out.println("product not found");
+			       }
+			       
+			       break;
+		   case 6:l.stream().map(e->e.getPprice()).sorted().forEach(v->System.out.println(v));
+		   		  break;
+		   case 7:l.stream().map(e->e.getPprice()).sorted(Comparator.reverseOrder()).forEach(v->System.out.println(v));
+		   		  break;
+		   case 8:l.stream().map(e->e.getPname()).sorted().forEach(v->System.out.println(v));
+		   		  break;
+		   case 9:l.stream().map(e->e.getPname()).sorted(Comparator.reverseOrder()).forEachOrdered(v->System.out.println(v));
+		   		  break;
+			case 10:System.exit(0);
+						
+			default: System.out.println("enter the valid option");       
+			
+			}
+					
+		}while(var<=10);
+	}
+
+}
+
+package service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import bean.Product;
+import daolayer.Dao;
+
+public class ProductService {
+	 List<Product> l=new ArrayList<>();
+	 Dao d=new Dao();
+	 
+     public int addproduct(Product q)
+     {
+    	 int res;
+    	 if(q.getPprice()>500)
+    	 {
+    		
+    		res=d.addproductdao(q);
+    		if(res>0)
+    		{
+    		return 1;
+    		}
+    		 else
+        	 {
+        		return 0; 
+        	 }		 
+    	 }
+    	 else
+    	 {
+    		return 0; 
+    	 }
+    	  	 
+     }
+     public int update(int id,int price) throws Exception
+		{
+			int flag=0;
+			flag=d.updateproductdao(id, price);
+			if(flag==1)		
+				{
+					
+					return 1;
+				}
+			else
+				return 0;
+		}
+		public int delete(int id) throws Exception
+		{
+			int flag=0;
+			flag=d.deleteProductdao(id);
+			if(flag==1)
+			{
+				return 1;
+			}
+			else
+			{
+				return 0;
+			}
+		}
+		public List<Product> displayall()
+		{
+			l=d.getdetails();
+			return l;
+		}
+		public float retrieve(int id)
+		{
+			float price=d.getprice(id);
+			return price;
+		}
+
+}
