@@ -1,0 +1,141 @@
+import java.util.Scanner;
+class Demo1{
+public static void main(String args[])
+{
+int var,count=0,flag=0,flag1=0,flag2=0,count1=0,percentage;
+int ans[]= new int[20];
+do
+{
+System.out.println("welcome and all the best for your exam");
+System.out.println("select the Subject 1.english 2.maths 3.gk \n choose any one");
+Scanner sc=new Scanner(System.in);
+var=sc.nextInt();
+switch(var) 
+{
+case 1: if(flag==1)
+	{ 
+        System.out.println("You Already Completed");}
+	else
+        {
+	System.out.println("Start The English Exam");
+	System.out.println("count of letters in the word Pandu");
+	int a=sc.nextInt();
+	if(a==5)
+	{ 
+	ans[0]=1;
+	}
+	
+	System.out.println("count of letters in the word Bahubali");
+	int b=sc.nextInt();
+	if(b==8)
+	{ 
+	ans[1]=1;
+	}
+	
+	System.out.println("count of letters in the word Amaravathi");
+	int c=sc.nextInt();
+	if(c==10)
+	{ 
+	ans[2]=1;
+	}
+	
+        count++;
+        flag=1;
+	}
+        break;       
+case 2: if(flag1==1)
+	{
+        System.out.println("You Already Completed");}
+	else{
+	System.out.println("Start The maths Exam");
+	System.out.println("What Is the Count of 200+250");
+	int a=sc.nextInt();
+	if(a==450)
+	{ 
+	ans[3]=1;
+	}
+	
+	System.out.println("What Is The Count Of 250-200");
+	int b=sc.nextInt();
+	if(b==50)
+	{ 
+	ans[4]=1;
+	}
+	
+	System.out.println("What Is The Count Of 300+25");
+	int c=sc.nextInt();
+	if(c==325)
+	{ 
+	ans[5]=1;
+	}
+	
+        count++;
+	flag1=1;
+	}
+        break;
+
+case 3: if(flag2==1)
+	{ System.out.println("You Already Completed");}
+	else{
+	System.out.println("Start The gk Exam");
+	System.out.println("How Many States Are There In India");
+	int a=sc.nextInt();
+	if(a==29)
+	{ 
+	ans[6]=1;
+	}
+	
+	System.out.println("How Many Union Trritories In India");
+	int b=sc.nextInt();
+	if(b==7)
+	{ 
+	ans[7]=1;
+	}
+	
+	System.out.println("How Many Prime Ministers In India Till Now");
+	int c=sc.nextInt();
+	if(c==14)
+	{ 
+	ans[8]=1;
+	}
+	
+        count++;
+	flag2=1;
+	}
+        break;
+
+default: if(flag==0){
+		System.out.println("complete English,Maths and Gk Exam");
+		}
+	else if(flag1==0){
+		System.out.println("complete Maths and Gkexam");
+		}
+	else if(flag2==0){
+		System.out.println("complete gk exam");
+		}
+	else{
+         System.out.println("complete all the exams");
+	}
+	break;
+}
+}
+while(count<3);
+System.out.println("Your Result");
+for(int i=0;i<ans.length;i++)
+{
+	
+	if(ans[i]==1)
+	{
+		count1++;
+	}
+}
+     percentage = (count1*100)/9;
+     if(per>70 &&per<89){
+	System.out.println(per+10+"This Is Your Percentage");
+}
+else if(per>90 && per<100){
+	System.out.println("Congrajulations Selected For Gate Exam Your percentage is"+percentage);
+}
+else if(per<70 && per>30){
+	 System.out.println("Not Qualified Try Again");
+}

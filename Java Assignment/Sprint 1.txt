@@ -1,0 +1,247 @@
+package bean;
+
+public class Product {
+private int pid;
+private String pname;
+private int price;
+public int getPid() {
+	return pid;
+}
+public void setPid(int pid) {
+	this.pid = pid;
+}
+public String getPname() {
+	return pname;
+}
+public void setPname(String pname) {
+	this.pname = pname;
+}
+public int getPrice() {
+	return price;
+}
+public void setPrice(int price) {
+	this.price = price;
+}
+
+@Override
+public String toString() {
+	return "Product [pid=" + pid + ", pname=" + pname + ", price=" + price + "]";
+}
+public Product(int pid, String pname, int price) {
+	super();
+	this.pid = pid;
+	this.pname = pname;
+	this.price = price;
+}
+public Product() {
+	super();
+	
+}	
+}
+
+
+package operation;
+import java.awt.List;
+import java.util.ArrayList;
+import java.util.Scanner;
+import bean.Product;
+import service.ProductService;
+public class ProductOperation {
+	public static void main(String[] args) throws Exception {
+		ProductService ps = new ProductService();
+		// TODO Auto-generated method stub
+		int var;	
+		do {
+			
+			ArrayList<Product> l=new ArrayList<Product>();
+			//Product p;
+			Scanner sc=new Scanner(System.in);
+			System.out.println("1.Add\n2.Update\n3.Delete\n4.DisplayAll\n5.price using id\n6.exit");
+			System.out.println("choose one option");
+			var=sc.nextInt();
+			switch(var) {
+			case 1: System.out.println("Enter the product details id");
+				 int id3=sc.nextInt();
+				 sc.nextLine();
+				 System.out.println("Enter the product detail name");
+				 String pname=sc.nextLine();
+				 System.out.println("Enter the product details like price");
+				 int price=sc.nextInt();
+				 int q=ps.addproduct(id3,pname,price);
+				  if(q==1)
+				    {
+					System.out.println("You have entered a duplicate id");
+				    }
+				    else
+				    {
+					System.out.println("Your product had added successfully");
+				    }
+					break;
+			case 2: System.out.println("Please Enter the product id ");
+				  int id=sc.nextInt();
+				  System.out.println("Please enter the  price ");
+				  int price1=sc.nextInt();
+				  int b=ps.update(id, price1);
+				   if(b==1)
+				    {
+					System.out.println("Your Product updated successfully");
+				    }
+				    else
+				    {
+					System.out.println("Your product not found");
+				    }
+					break;
+			case 3: System.out.println("Enter index value of product id to delete");
+				 int id1=sc.nextInt();
+				 int c=ps.delete(id1);
+				  if(c==1)
+				   {
+					System.out.println("Your Product deleted successfully");
+				   }
+				   else
+				   {
+					System.out.println("Your product not found");
+				   }
+				    break;
+			case 4:System.out.println("Products details");
+			       l=ps.displayall();
+			       for(Product a:l)
+			       {
+			    	   System.out.println(l.indexOf(a)+":"+ a);
+			       }
+			       break;
+			case 5:System.out.println("Enter product id to view the price");
+			       int id2=sc.nextInt();
+			       int d=ps.retrieve(id2);
+			       if(d>0)
+			       {
+			    	   System.out.println("Product price is "+d);   
+			       }
+			       else
+			       {
+			    	   System.out.println("Product not found");
+			       }
+			       
+			       break;
+			case 6:System.exit(0);
+			
+			default: System.out.println("Enter the valid option");       
+			
+	 	}
+					
+	   }while(var<=6);
+      }
+}
+
+
+package service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import bean.Product;
+
+public class ProductService{
+   ArrayList<Product> ll=new ArrayList<Product>();	
+	Product p;
+        int i=0;
+		
+	public int addproduct(int id,String Pname,int price) throws Exception {
+	  int flag=0;
+	    try {
+		  for(Product p:ll)
+		   {
+		     if(id==p.getPid())
+			 {
+			   flag=1;
+			 }
+		    }
+		 }
+	           catch(Exception e)
+			{
+			   System.err.println(e.toString());
+			}
+		   if(flag==0)		
+				{
+			           p=new Product(id,Pname,price);
+				    ll.add(p);
+				     return 0;
+				}
+		   else {
+			  return 1;
+		   
+			}
+			
+		}
+		public int update(int id,int price) throws Exception
+		{
+		  int flag=0;
+		  try 
+                     {
+		      for(Product p:ll)
+			{
+			  if(id==p.getPid())
+			    {
+				flag=1;
+				p.setPrice(price);
+			     }
+			}
+			}
+			catch(Exception e)
+			{
+			   System.err.println(e.toString());
+			}
+			if(flag==1)		
+				{
+					
+				  return 1;
+				}
+			else
+				return 0;
+		}
+		public int delete(int id) throws Exception
+		{
+		    int flag=0;
+		     try {
+			for(Product p:ll)
+			{
+			   if(id==p.getPid())
+			     {
+				flag=1;
+				int x=ll.indexOf(p);
+				ll.remove(x);
+			      }
+			}
+			}
+			catch(Exception e)
+			{
+			   System.err.println(e.toString());
+			}
+			if(flag==1)
+			{
+			   return 1;
+			}
+			else
+			{
+			   return 0;
+			}
+		}
+		public ArrayList<Product> displayall()
+		{
+		    return ll;
+		}
+		public int retrieve(int id)
+		{
+		    for(Product p:ll)
+			{
+			    if(id==p.getPid())
+				{
+				  return p.getPrice();	
+				}
+			}
+			return 0;
+		}
+}
+
+
+
